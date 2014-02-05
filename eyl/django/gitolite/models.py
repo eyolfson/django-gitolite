@@ -11,6 +11,11 @@ from django.db import models
 from django.db.models.signals import post_save, pre_delete
 
 from eyl.django.ssh.models import Key
+from eyl.django.gitolite.utils import (
+    home_dir,
+    receive_key_create,
+    receive_key_delete
+)
 
 class RepoManager(models.Manager):
 
@@ -37,7 +42,7 @@ class Repo(models.Model):
         return self.path
 
     def sync(self):
-        git_path = os.path.join(os.environ['HOME'], 'repositories',
+        git_path = os.path.join(home_dir(), 'repositories',
                                 '{}.git'.format(self.path))
         self.creator = None
         try:
@@ -74,36 +79,6 @@ class Access(models.Model):
         unique_together = ('user', 'repo')
         ordering = ['repo', 'user']
 
-def get_filename(key):
-    filename = '{}@django-{}.pub'.format(key.user.username, key.pk)
-    return filename
-
-def get_gitolite_path(key):
-    keydir = os.path.join(os.environ['HOME'], '.gitolite', 'keydir')
-    return os.path.join(keydir, get_filename(key))
-
-def ssh_authkeys():
-    from subprocess import call, DEVNULL
-    call(['gitolite', 'trigger', 'SSH_AUTHKEYS'], stdout=DEVNULL,
-         stderr=DEVNULL)
-
-def add_key(sender, instance, **kwargs):
-    abspath = get_gitolite_path(instance)
-    try:
-        with open(abspath, 'w') as f:
-            f.write(instance.data)
-            f.write('\n')
-    except:
-        pass
-    ssh_authkeys()
-
-def remove_key(sender, instance, **kwargs):
-    abspath = get_gitolite_path(instance)
-    try:
-        os.remove(abspath)
-    except:
-        pass
-    ssh_authkeys()
-
-post_save.connect(add_key, Key)
-pre_delete.connect(remove_key, Key)
+# Signals
+post_save.connect(receive_key_create, Key)
+pre_delete.connect(receive_key_delete, Key)
