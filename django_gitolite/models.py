@@ -72,6 +72,7 @@ class Repo(models.Model):
             pass
 
     class Meta:
+        db_table = 'gitolite_repo'
         ordering = ['path']
 
 class Push(models.Model):
@@ -82,13 +83,17 @@ class Push(models.Model):
     new_rev = models.CharField(max_length=40)
     refname = models.TextField(db_index=True)
 
+    class Meta:
+        db_table = 'gitolite_push'
+
 class Access(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, related_name='accesses')
     repo = models.ForeignKey(Repo, related_name='accesses')
 
     class Meta:
-        unique_together = ('user', 'repo')
+        db_table = 'gitolite_access'
         ordering = ['repo', 'user']
+        unique_together = ('user', 'repo')
 
 # Signals
 post_save.connect(receive_key_create, Key)
