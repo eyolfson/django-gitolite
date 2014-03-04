@@ -21,7 +21,7 @@ setup(
     packages = ['eyl.django.gitolite',
                 'eyl.django.gitolite.management',
                 'eyl.django.gitolite.management.commands'],
-    version = '0.0.1',
+    version = '0.0.2',
     description = 'A basic Django app for using Gitolite',
     author = 'Jon Eyolfson',
     author_email = 'jon@eyl.io',
