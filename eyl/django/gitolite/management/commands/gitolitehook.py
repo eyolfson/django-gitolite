@@ -3,9 +3,13 @@
 # You should have received a copy of the GNU General Public License along with
 # this program. If not, see <http://www.gnu.org/licenses/>.
 
+import importlib
 import os
 import sys
 
+from importlib import import_module
+
+from django.conf import settings
 from django.contrib.auth import get_user_model
 from django.core.management.base import NoArgsCommand, CommandError
 
@@ -31,3 +35,13 @@ class Command(NoArgsCommand):
         old_rev, new_rev, refname = sys.stdin.read().split()
         push = Push.objects.create(repo=repo, user=user, old_rev=old_rev,
                                    new_rev=new_rev, refname=refname)
+
+        try:
+            hooks = settings.GITOLITE_HOOKS
+        except AttributeError:
+            hooks = []
+        for h in hooks:
+            module_name, function_name = h.rsplit('.')
+            m = importlib.import_module(module_name)
+            f = getattr(m, function_name)
+            f(push)
