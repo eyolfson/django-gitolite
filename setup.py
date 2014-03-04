@@ -18,7 +18,7 @@ from distutils.core import setup
 
 setup(
     name = 'django-gitolite',
-    packages = ['django-gitolite'],
+    packages = ['eyl.django.gitolite'],
     version = '0.0.1',
     description = 'A basic Django app for using Gitolite',
     author = 'Jon Eyolfson',
