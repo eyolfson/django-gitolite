@@ -21,7 +21,7 @@ from subprocess import check_output, Popen, DEVNULL, PIPE
 from django.contrib.auth import get_user_model
 from django.core.management.base import BaseCommand, CommandError
 
-from eyl.django.gitolite.models import Access, Push, Repo
+from django_gitolite.models import Access, Push, Repo
 
 def get_user_list():
     return list(get_user_model().objects.all())

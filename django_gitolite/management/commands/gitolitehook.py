@@ -24,7 +24,7 @@ from django.conf import settings
 from django.contrib.auth import get_user_model
 from django.core.management.base import NoArgsCommand, CommandError
 
-from eyl.django.gitolite.models import Push, Repo
+from django_gitolite.models import Push, Repo
 
 class Command(NoArgsCommand):
     help = 'Handles the git post-update hook for gitolite.'

@@ -18,14 +18,14 @@ from distutils.core import setup
 
 setup(
     name = 'django-gitolite',
-    packages = ['eyl.django.gitolite',
-                'eyl.django.gitolite.management',
-                'eyl.django.gitolite.management.commands'],
-    version = '0.0.2',
+    packages = ['django_gitolite',
+                'django_gitolite.management',
+                'django_gitolite.management.commands'],
+    version = '0.0.3',
     description = 'A basic Django app for using Gitolite',
     author = 'Jon Eyolfson',
     author_email = 'jon@eyl.io',
     url = 'https://github.com/eyolfson/django-gitolite/',
     download_url = ('https://github.com/eyolfson/django-gitolite/archive/'
-                    'v0.0.2.tar.gz'),
+                    'v0.0.3.tar.gz'),
 )

@@ -21,8 +21,8 @@ from django.contrib.auth import get_user_model
 from django.db import models
 from django.db.models.signals import post_save, pre_delete
 
-from eyl.django.ssh.models import Key
-from eyl.django.gitolite.utils import (
+from django_ssh.models import Key
+from django_gitolite.utils import (
     home_dir,
     receive_key_create,
     receive_key_delete
