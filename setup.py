@@ -27,5 +27,5 @@ setup(
     author_email = 'jon@eyl.io',
     url = 'https://github.com/eyolfson/django-gitolite/',
     download_url = ('https://github.com/eyolfson/django-gitolite/archive/'
-                    'v0.0.1.tar.gz'),
+                    'v0.0.2.tar.gz'),
 )
