@@ -52,7 +52,7 @@ class Command(NoArgsCommand):
         except AttributeError:
             hooks = []
         for h in hooks:
-            module_name, function_name = h.rsplit('.')
+            module_name, function_name = h.rsplit('.', maxsplit=1)
             m = importlib.import_module(module_name)
             f = getattr(m, function_name)
             f(push)
