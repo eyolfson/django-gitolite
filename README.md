@@ -18,14 +18,16 @@ By default the Gitolite rc file is `~/.gitolite.rc`. Follow these steps:
 This is an example `post-compile/django` script:
 
     #!/bin/bash
-    PYTHONPATH=/srv/git/site DJANGO_SETTINGS_MODULE=settings \
-    python /srv/git/site/manage.py gitolitetrigger $@
+    source /srv/git/virtualenv/bin/activate
+    cd /srv/git/site
+    DJANGO_SETTINGS_MODULE=settings python manage.py gitolitetrigger $@
 
 This is an example `post-receive` script:
 
     #!/bin/bash
-    PYTHONPATH=/srv/git/site DJANGO_SETTINGS_MODULE=settings \
-    python /srv/git/site/manage.py gitolitehook $@
+    source /srv/git/virtualenv/bin/activate
+    cd /srv/git/site
+    DJANGO_SETTINGS_MODULE=settings python manage.py gitolitehook $@
 
 ### Running as another user
 
