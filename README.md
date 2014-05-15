@@ -6,11 +6,11 @@ A basic Django app for using Gitolite
 
 By default the Gitolite rc file is `~/.gitolite.rc`. Follow these steps:
 
-1. Add `LOCAL_CODE => "$rc{GL_ADMIN_BASE}/local",` to the rc file.
-2. Create `~/.gitolite/local/triggers/post-compile/django`, it should be
-   executable and call the `gitolitetrigger` management command.
-3. Create `~/.gitolite/local/hooks/common/post-receive`, it should be
-   executable and call the `gitolitehook` management command.
+1. Add `LOCAL_CODE => "$ENV{HOME}/local",` to the rc file.
+2. Create `~/.local/triggers/post-compile/django`, it should be executable and
+   call the `gitolitetrigger` management command.
+3. Create `~/.local/hooks/common/post-receive`, it should be executable and call
+   the `gitolitehook` management command.
 4. Add `POST_COMPILE => ['post-compile/django'],` to the rc file.
 5. Add `POST_CREATE => ['post-compile/django'],` to the rc file.
 6. Add `SSH_AUTHKEYS => ['post-compile/ssh-authkeys'],` to the rc file.
@@ -18,16 +18,18 @@ By default the Gitolite rc file is `~/.gitolite.rc`. Follow these steps:
 This is an example `post-compile/django` script:
 
     #!/bin/bash
-    source /srv/git/virtualenv/bin/activate
-    cd /srv/git/site
-    DJANGO_SETTINGS_MODULE=settings python manage.py gitolitetrigger $@
+    source ~/virtualenv/bin/activate
+    export PYTHONPATH=~/site
+    export DJANGO_SETTINGS_MODULE=settings
+    python ~/site/manage.py gitolitetrigger $@
 
 This is an example `post-receive` script:
 
     #!/bin/bash
-    source /srv/git/virtualenv/bin/activate
-    cd /srv/git/site
-    DJANGO_SETTINGS_MODULE=settings python manage.py gitolitehook $@
+    source ~/virtualenv/bin/activate
+    export PYTHONPATH=~/site
+    export DJANGO_SETTINGS_MODULE=settings
+    python ~/site/manage.py gitolitehook $@
 
 ### Running as another user
 
