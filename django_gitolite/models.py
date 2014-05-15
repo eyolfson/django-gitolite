@@ -83,6 +83,10 @@ class Push(models.Model):
     new_rev = models.CharField(max_length=40)
     refname = models.TextField(db_index=True)
 
+    def __str__(self):
+        return '{} {} {} {}'.format(self.repo, self.old_rev,
+                                    self.new_rev, self.refname)
+
     class Meta:
         db_table = 'gitolite_push'
 
