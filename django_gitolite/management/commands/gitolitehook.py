@@ -43,9 +43,12 @@ class Command(NoArgsCommand):
         username = os.environ['GL_USER']
         user = get_user_model().objects.get_or_create(username=username)[0]
 
-        old_rev, new_rev, refname = sys.stdin.read().split()
-        push = Push.objects.create(repo=repo, user=user, old_rev=old_rev,
-                                   new_rev=new_rev, refname=refname)
+        pushes = []
+        for line in sys.stdin:
+            old_rev, new_rev, refname = line.split()
+            pushes.append(Push.objects.create(repo=repo, user=user,
+                                              old_rev=old_rev, new_rev=new_rev,
+                                              refname=refname))
 
         try:
             hooks = settings.GITOLITE_HOOKS
@@ -55,4 +58,5 @@ class Command(NoArgsCommand):
             module_name, function_name = h.rsplit('.', maxsplit=1)
             m = importlib.import_module(module_name)
             f = getattr(m, function_name)
-            f(push)
+            for push in pushes:
+                f(push)
