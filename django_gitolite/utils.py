@@ -44,7 +44,7 @@ def receive_key_create(sender, instance, **kwargs):
     path = key_abspath(instance)
     try:
         with open(path, 'w') as f:
-            f.write(instance.data)
+            f.write(instance.body)
             f.write('\n')
         ssh_authkeys()
     except:
