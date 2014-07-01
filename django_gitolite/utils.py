@@ -30,10 +30,14 @@ def key_abspath(key):
     filename = '{}@django-{}.pub'.format(key.user.username, key.pk)
     return os.path.join(home_dir(), '.gitolite', 'keydir', filename)
 
-def ssh_authkeys():
-    command = ['gitolite', 'trigger', 'SSH_AUTHKEYS']
+def gitolite_command_prefix():
+    command = ['gitolite']
     if pwd.getpwuid(os.getuid()).pw_name != settings.GITOLITE_USER:
         command = ['sudo', '-n', '-u', settings.GITOLITE_USER] + command
+    return command
+
+def ssh_authkeys():
+    command = gitolite_command_prefix() + ['trigger', 'SSH_AUTHKEYS']
     try:
         subprocess.check_output(command, stderr=subprocess.STDOUT)
     except subprocess.CalledProcessError as e:

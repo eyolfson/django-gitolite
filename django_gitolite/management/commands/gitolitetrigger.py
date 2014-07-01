@@ -22,6 +22,7 @@ from django.contrib.auth import get_user_model
 from django.core.management.base import BaseCommand, CommandError
 
 from django_gitolite.models import Access, Push, Repo
+from django_gitolite.utils import gitolite_command_prefix
 
 def get_user_list():
     return list(get_user_model().objects.all())
@@ -51,7 +52,8 @@ class Command(BaseCommand):
             repo.sync()
             repo.save()
         Access.objects.filter(repo=repo).delete()
-        with Popen(['gitolite', 'access', repo.path, '%', 'R', 'any'],
+        with Popen(gitolite_command_prefix() +
+                   ['access', repo.path, '%', 'R', 'any'],
                    stdin=PIPE, stdout=PIPE, stderr=DEVNULL,
                    universal_newlines=True) as p:
 
@@ -75,7 +77,8 @@ class Command(BaseCommand):
                 Access.objects.bulk_create(access_list)
 
     def post_compile(self):
-        output = check_output(['gitolite', 'list-phy-repos'], stderr=DEVNULL,
+        output = check_output(gitolite_command_prefix() + ['list-phy-repos'],
+                              stderr=DEVNULL,
                               universal_newlines=True)
         repo_paths = output.splitlines()
         user_list = get_user_list()
