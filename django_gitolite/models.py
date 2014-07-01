@@ -71,6 +71,10 @@ class Repo(models.Model):
         except IOError:
             pass
 
+    @models.permalink
+    def get_absolute_url(self):
+        return ('git:repo', (), {'path': self.path})
+
     class Meta:
         db_table = 'gitolite_repo'
         ordering = ['path']
