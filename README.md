@@ -7,9 +7,9 @@ A basic Django app for using Gitolite
 By default the Gitolite rc file is `~/.gitolite.rc`. Follow these steps:
 
 1. Add `LOCAL_CODE => "$ENV{HOME}/local",` to the rc file.
-2. Create `~/.local/triggers/post-compile/django`, it should be executable and
+2. Create `~/local/triggers/post-compile/django`, it should be executable and
    call the `gitolitetrigger` management command.
-3. Create `~/.local/hooks/common/post-receive`, it should be executable and call
+3. Create `~/local/hooks/common/post-receive`, it should be executable and call
    the `gitolitehook` management command.
 4. Add `POST_COMPILE => ['post-compile/django'],` to the rc file.
 5. Add `POST_CREATE => ['post-compile/django'],` to the rc file.
@@ -47,6 +47,13 @@ Next, you need to setup `sudo` so the gitolite user can use it to run Gitolite
 triggers. Insert the following line into `/etc/sudoers`:
 
     %git ALL=(git)NOPASSWD:/usr/bin/gitolite trigger SSH_AUTHKEYS
+
+Below is the following I use on my server:
+
+    %git ALL=(git)NOPASSWD:/usr/bin/gitolite trigger SSH_AUTHKEYS,/usr/bin/gitolite list-phy-repos,/usr/bin/gitolite access *
+
+    Defaults:git env_keep += "GL_REPO GL_USER GL_BYPASS_ACCESS_CHECKS"
+    git ALL=(site-eyl) NOPASSWD: /srv/site-eyl/bin/manage gitolitehook,/srv/site-eyl/bin/manage gitolitetrigger *
 
 ## License
 
