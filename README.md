@@ -50,6 +50,7 @@ triggers. Insert the following line into `/etc/sudoers`:
 
 Below is the following I use on my server:
 
+    Defaults: site-eyl env_keep += "GL_USER"
     %git ALL=(git)NOPASSWD:/usr/bin/gitolite trigger SSH_AUTHKEYS,/usr/bin/gitolite list-phy-repos,/usr/bin/gitolite access *,/usr/bin/gitolite D *
 
     Defaults:git env_keep += "GL_REPO GL_USER GL_BYPASS_ACCESS_CHECKS"
