@@ -33,7 +33,7 @@ class Command(BaseCommand):
                 repo = Repo.objects.get(path=repo_path)
                 user = repo.creator
                 if user == None:
-                    msg = 'Repo "{}" is not a wildcard.' 
+                    msg = 'Repo "{}" is not a wildcard.'
                     raise CommandError(msg.format(repo_path))
                 username = user.username
                 os.environ['GL_USER'] = username
