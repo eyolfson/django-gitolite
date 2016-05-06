@@ -43,6 +43,9 @@ def ssh_authkeys():
     except subprocess.CalledProcessError as e:
         msg = "command '{}' returned {}" 
         logger.error(msg.format(' '.join(e.cmd), e.returncode))
+    except Exception as e:
+        msg = "command '{}' exception '{}'"
+        logger.error(msg.format(' '.join(command), e))
 
 def receive_key_create(sender, instance, **kwargs):
     path = key_abspath(instance)
