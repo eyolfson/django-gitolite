@@ -31,7 +31,10 @@ def key_abspath(key):
     return os.path.join(home_dir(), '.gitolite', 'keydir', filename)
 
 def gitolite_command_prefix():
-    command = ['gitolite']
+    try:
+        command = [settings.GITOLITE_EXECUTABLE_PATH]
+    except:
+        command = ['gitolite']
     if pwd.getpwuid(os.getuid()).pw_name != settings.GITOLITE_USER:
         command = ['sudo', '-n', '-u', settings.GITOLITE_USER] + command
     return command
