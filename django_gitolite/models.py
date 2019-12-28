@@ -43,9 +43,15 @@ class RepoManager(models.Manager):
 
 class Repo(models.Model):
     path = models.TextField(db_index=True, unique=True)
-    creator = models.ForeignKey(settings.AUTH_USER_MODEL, blank=True, null=True,
+    creator = models.ForeignKey(settings.AUTH_USER_MODEL,
+                                blank=True,
+                                null=True,
+                                on_delete=models.CASCADE,
                                 related_name='created_repos')
-    forked_from = models.ForeignKey('self', blank=True, null=True,
+    forked_from = models.ForeignKey('self',
+                                    blank=True,
+                                    null=True,
+                                    on_delete=models.CASCADE,
                                     related_name='forked_repos')
     objects = RepoManager()
 
@@ -80,8 +86,12 @@ class Repo(models.Model):
         ordering = ['path']
 
 class Push(models.Model):
-    repo = models.ForeignKey(Repo, related_name='pushes')
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, related_name='pushes')
+    repo = models.ForeignKey(Repo,
+                             on_delete=models.CASCADE,
+                             related_name='pushes')
+    user = models.ForeignKey(settings.AUTH_USER_MODEL,
+                             on_delete=models.CASCADE,
+                             related_name='pushes')
     time = models.DateTimeField(auto_now_add=True)
     old_rev = models.CharField(max_length=40)
     new_rev = models.CharField(max_length=40)
@@ -95,8 +105,12 @@ class Push(models.Model):
         db_table = 'gitolite_push'
 
 class Access(models.Model):
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, related_name='accesses')
-    repo = models.ForeignKey(Repo, related_name='accesses')
+    user = models.ForeignKey(settings.AUTH_USER_MODEL,
+                             on_delete=models.CASCADE,
+                             related_name='accesses')
+    repo = models.ForeignKey(Repo,
+                             on_delete=models.CASCADE,
+                             related_name='accesses')
 
     class Meta:
         db_table = 'gitolite_access'
