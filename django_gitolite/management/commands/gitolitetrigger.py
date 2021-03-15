@@ -31,19 +31,28 @@ class Command(BaseCommand):
     args = '<name [path [username operation]]>'
     help = 'Handles gitolite triggers'
 
-    def handle(self, name, *args, **options):
-        if name == 'POST_COMPILE':
+    def add_arguments(self, parser):
+        subparsers = parser.add_subparsers(dest='subparser_name')
+
+        parser_post_compile = subparsers.add_parser('POST_COMPILE')
+
+        parser_post_create = subparsers.add_parser('POST_CREATE')
+        parser_post_create.add_argument('path')
+        parser_post_create.add_argument('username', nargs='?')
+        parser_post_create.add_argument('operation', nargs='?')
+
+    def handle(self, *args, **options):
+        if options['subparser_name'] == 'POST_COMPILE':
             if len(args) != 0:
                 raise CommandError('Invalid number of arguments for POST_COMPILE.')
             self.post_compile()
-        elif name == 'POST_CREATE':
-            if not len(args) in (1, 3):
+        elif options['subparser_name'] == 'POST_CREATE':
+            if options['username'] and not options['operation']:
                 raise CommandError('Invalid number of arguments for POST_CREATE.')
-            if len(args) == 1:
+            if not options['username'] == 1:
                 # This is just a normal create, it'll be handled by POST_COMPILE
                 return
-            self.post_create(*args)
-
+            self.post_create(options['path'], options['username'], options['operation'])
 
     def sync(self, path, user_list=get_user_list()):
         repo, created = Repo.objects.get_or_create(path)
