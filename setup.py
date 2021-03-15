@@ -21,11 +21,11 @@ setup(
     packages = ['django_gitolite',
                 'django_gitolite.management',
                 'django_gitolite.management.commands'],
-    version = '0.2.0',
+    version = '0.2.1',
     description = 'A basic Django app for using Gitolite',
     author = 'Jon Eyolfson',
     author_email = 'jon@eyl.io',
     url = 'https://github.com/eyolfson/django-gitolite/',
     download_url = ('https://github.com/eyolfson/django-gitolite/archive/'
-                    'v0.2.0.tar.gz'),
+                    'v0.2.1.tar.gz'),
 )
