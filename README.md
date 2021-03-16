@@ -34,7 +34,8 @@ This is an example `post-receive` script:
 ### Running as another user
 
 This configuration requires `sudo` and the current user to be in the same group
-as the gitolite user's default group.
+as the gitolite user's default group. Be sure to set `GITOLITE_USER` properly
+in your `settings.py` file.
 
 As the gitolite user, open `~/.gitolite.rc` and add `UMASK =>  0027,`. This is
 required to be able to read `gl-creator` and `gl-forked-from` files in the
