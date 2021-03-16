@@ -43,6 +43,17 @@ and is writable by the current user. Files in this directory need to be
 readable by the gitolite user, to ensure that files are created belong to the
 gitolite user's default group use `chmod g+rwxs ~/.gitolite/keydir`.
 
+Note in this example I recommend you change `post-compile/django` to something
+like:
+
+    #!/bin/bash
+    sudo -n -u site-eyl /srv/site-eyl/bin/manage gitolitetrigger $@
+
+Also, change `post-receive` to something like:
+
+    #!/bin/bash
+    sudo -n -u site-eyl /srv/site-eyl/bin/manage gitolitehook $@
+
 Next, you need to setup `sudo` so the gitolite user can use it to run Gitolite
 triggers. Insert the following line into `/etc/sudoers`:
 
