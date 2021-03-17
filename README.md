@@ -70,4 +70,4 @@ Below is the following I use on my server:
 
 ## License
 
-All code is licensed under GPL v3.
+All code is licensed under AGPL v3.
